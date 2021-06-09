@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class SquareResponseDTO extends FigureResponseDTO {
 
-    private char symbol;
+    private String symbol;
 
 }

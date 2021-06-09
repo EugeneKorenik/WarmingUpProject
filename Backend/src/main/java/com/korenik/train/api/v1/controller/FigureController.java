@@ -8,11 +8,14 @@ import com.korenik.train.service.FigureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
+@Validated
 @RestController
 @RequestMapping("/api/v1/figures")
 public class FigureController {
@@ -46,7 +49,7 @@ public class FigureController {
 
     @PostMapping
     public ResponseEntity<FigureResponseDTO> create(@RequestParam long groupId,
-                                                    @RequestBody FigureRequestDTO request) {
+                                                    @RequestBody @Valid FigureRequestDTO request) {
         log.info("Request to create figure in group {}", groupId);
         var entity = figureMapper.asEntity(request);
         entity = figureService.create(groupId, entity);
@@ -58,7 +61,7 @@ public class FigureController {
     public ResponseEntity<FigureResponseDTO> update(@PathVariable FigureType type,
                                                     @PathVariable long id,
                                                     @RequestParam(required = false) Long groupId,
-                                                    @RequestBody FigureRequestDTO request) {
+                                                    @RequestBody @Valid FigureRequestDTO request) {
         log.info("Request to update figure of type {} with id {}", type, id);
 
         var entity = figureMapper.asEntity(request);
