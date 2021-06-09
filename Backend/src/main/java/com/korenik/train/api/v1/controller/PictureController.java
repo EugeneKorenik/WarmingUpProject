@@ -59,7 +59,7 @@ public class PictureController {
 
         var entity = pictureMapper.asEntity(request);
         entity.setId(id);
-        entity = pictureService.save(entity);
+        entity = pictureService.update(entity);
 
         var response = pictureMapper.asResponse(entity);
         response.setGroups(null);
