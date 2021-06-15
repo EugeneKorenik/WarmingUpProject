@@ -13,6 +13,6 @@ public class PictureResponseDTO extends BaseResponseDTO {
 
     private String name;
 
-    private List<GroupResponseDTO> groups;
+    private GroupResponseDTO rootGroup;
 
 }

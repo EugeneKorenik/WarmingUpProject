@@ -1,6 +1,8 @@
 package com.korenik.train.service;
 
+import com.korenik.train.entity.Group;
 import com.korenik.train.entity.Picture;
+import com.korenik.train.model.GroupType;
 import com.korenik.train.repository.PictureRepository;
 import com.korenik.train.service.mapper.PictureMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class PictureService {
     }
 
     public Picture save(Picture picture) {
+        var rootGroup = new Group();
+        rootGroup.setGroupType(GroupType.HORIZONTAL);
+        picture.setRootGroup(rootGroup);
         return pictureRepository.save(picture);
     }
 

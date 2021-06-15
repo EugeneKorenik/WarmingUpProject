@@ -34,14 +34,15 @@ public class GroupService {
                         Group group) {
         var picture = pictureService.findById(pictureId);
         group.setPicture(picture);
-
         group = groupRepository.save(group);
 
+        var parentGroup = picture.getRootGroup();
         if(parentGroupId != null) {
-            var parentGroup = findById(parentGroupId);
-            bindToGroup(group, parentGroup);
-            groupRepository.save(parentGroup);
+            parentGroup = findById(parentGroupId);
         }
+
+        bindToGroup(group, parentGroup);
+        groupRepository.save(parentGroup);
 
         return group;
     }

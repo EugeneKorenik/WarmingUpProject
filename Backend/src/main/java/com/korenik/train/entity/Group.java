@@ -14,8 +14,7 @@ public class Group extends BaseEntity {
 
     private GroupType groupType;
 
-    @ManyToOne
-    @JoinColumn(name = "picture_id")
+    @OneToOne
     private Picture picture;
 
     @ManyToOne

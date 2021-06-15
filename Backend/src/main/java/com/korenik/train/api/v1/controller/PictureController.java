@@ -31,7 +31,7 @@ public class PictureController {
         log.info("Request to find all pictures");
         var pictures = pictureService.findAll();
         var responseBody = pictureMapper.asResponse(pictures);
-        responseBody.forEach(picture -> picture.setGroups(null));
+        responseBody.forEach(picture -> picture.setRootGroup(null));
         return ResponseEntity.ok(responseBody);
     }
 
@@ -62,7 +62,7 @@ public class PictureController {
         entity = pictureService.update(entity);
 
         var response = pictureMapper.asResponse(entity);
-        response.setGroups(null);
+        response.setRootGroup(null);
 
         return ResponseEntity.ok(response);
     }
