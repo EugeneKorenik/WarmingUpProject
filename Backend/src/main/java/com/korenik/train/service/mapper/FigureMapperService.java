@@ -1,9 +1,6 @@
 package com.korenik.train.service.mapper;
 
-import com.korenik.train.entity.Circle;
-import com.korenik.train.entity.Figure;
-import com.korenik.train.entity.Square;
-import com.korenik.train.entity.Triangle;
+import com.korenik.train.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -18,6 +15,8 @@ public interface FigureMapperService {
             merge((Triangle) newInfo, (Triangle) entity);
         } else if (newInfo instanceof Square) {
             merge((Square) newInfo, (Square) entity);
+        } else if(newInfo instanceof Group) {
+            merge((Group) newInfo, (Group) entity);
         }
     }
 
@@ -38,5 +37,13 @@ public interface FigureMapperService {
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "modified", ignore = true)
     void merge(Square newInfo, @MappingTarget Square entity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "parentGroup", ignore = true)
+    @Mapping(target = "created", ignore = true)
+    @Mapping(target = "modified", ignore = true)
+    @Mapping(target = "picture", ignore = true)
+    @Mapping(target = "figures", ignore = true)
+    void merge(Group newInfo, @MappingTarget Group entity);
 
 }

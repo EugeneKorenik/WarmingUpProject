@@ -3,10 +3,9 @@ package com.korenik.train.api.v1.mapper;
 import com.korenik.train.api.v1.dto.figure.*;
 import com.korenik.train.api.v1.dto.figure.CircleRequestDTO;
 import com.korenik.train.api.v1.dto.figure.FigureRequestDTO;
-import com.korenik.train.entity.Circle;
-import com.korenik.train.entity.Figure;
-import com.korenik.train.entity.Square;
-import com.korenik.train.entity.Triangle;
+import com.korenik.train.api.v1.dto.figure.GroupRequestDTO;
+import com.korenik.train.api.v1.dto.figure.GroupResponseDTO;
+import com.korenik.train.entity.*;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -23,6 +22,8 @@ public interface FigureMapper {
             return asEntity((TriangleRequestDTO) request);
         } else if (request instanceof SquareRequestDTO) {
             return asEntity((SquareRequestDTO) request);
+        } else if(request instanceof GroupRequestDTO) {
+            return asEntity((GroupRequestDTO) request);
         }
 
         throw new IllegalArgumentException("Can't process instance of class: "
@@ -36,6 +37,8 @@ public interface FigureMapper {
             return asDTO((Triangle) entity);
         } else if (entity instanceof Square) {
             return asDTO((Square) entity);
+        } else if(entity instanceof Group) {
+            return asDTO((Group) entity);
         }
 
         throw new IllegalArgumentException("Can't process instance of class: "
@@ -53,5 +56,9 @@ public interface FigureMapper {
     Square asEntity(SquareRequestDTO request);
 
     SquareResponseDTO asDTO(Square square);
+
+    Group asEntity(GroupRequestDTO request);
+
+    GroupResponseDTO asDTO(Group group);
 
 }

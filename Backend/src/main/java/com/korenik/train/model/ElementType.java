@@ -1,7 +1,8 @@
 package com.korenik.train.model;
 
-public enum FigureType {
+public enum ElementType {
     SQUARE,
     TRIANGLE,
-    CIRCLE
+    CIRCLE,
+    GROUP
 }

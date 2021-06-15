@@ -14,7 +14,8 @@ import lombok.Setter;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CircleRequestDTO.class, name = "circle"),
         @JsonSubTypes.Type(value = TriangleRequestDTO.class, name = "triangle"),
-        @JsonSubTypes.Type(value = SquareRequestDTO.class, name = "square")
+        @JsonSubTypes.Type(value = SquareRequestDTO.class, name = "square"),
+        @JsonSubTypes.Type(value = GroupRequestDTO.class, name="group")
 })
 public abstract class FigureRequestDTO {
 }

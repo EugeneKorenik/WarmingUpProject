@@ -3,7 +3,8 @@ package com.korenik.train.api.v1.controller;
 import com.korenik.train.api.v1.dto.figure.FigureRequestDTO;
 import com.korenik.train.api.v1.dto.figure.FigureResponseDTO;
 import com.korenik.train.api.v1.mapper.FigureMapper;
-import com.korenik.train.model.FigureType;
+import com.korenik.train.entity.Figure;
+import com.korenik.train.model.ElementType;
 import com.korenik.train.service.FigureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class FigureController {
     }
 
     @GetMapping("/{type}/{id}")
-    public ResponseEntity<FigureResponseDTO> findByTypeAndId(@PathVariable FigureType type,
+    public ResponseEntity<FigureResponseDTO> findByTypeAndId(@PathVariable ElementType type,
                                                              @PathVariable long id) {
         log.info("Request to find figure of {} type with id {}", type, id);
         var figure = figureService.findByTypeAndId(type, id);
@@ -49,31 +50,38 @@ public class FigureController {
 
     @PostMapping
     public ResponseEntity<FigureResponseDTO> create(@RequestParam long groupId,
+                                                    @RequestParam(required = false) Integer index,
                                                     @RequestBody @Valid FigureRequestDTO request) {
         log.info("Request to create figure in group {}", groupId);
         var entity = figureMapper.asEntity(request);
-        entity = figureService.create(groupId, entity);
+        entity = figureService.create(entity, groupId, index);
         var response = figureMapper.asResponse(entity);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{type}/{id}")
-    public ResponseEntity<FigureResponseDTO> update(@PathVariable FigureType type,
-                                                    @PathVariable long id,
-                                                    @RequestParam(required = false) Long groupId,
-                                                    @RequestBody @Valid FigureRequestDTO request) {
+    public ResponseEntity<FigureResponseDTO> update(@PathVariable long id,
+                                                    @PathVariable ElementType type,
+                                                    @RequestParam(required = false) Long newGroupId,
+                                                    @RequestParam(required = false) Integer newIndex,
+                                                    @RequestBody(required = false) @Valid FigureRequestDTO request) {
         log.info("Request to update figure of type {} with id {}", type, id);
 
-        var entity = figureMapper.asEntity(request);
-        entity.setId(id);
-        entity = figureService.update(entity, groupId);
+        Figure entity;
+        if(request != null) {
+            entity = figureMapper.asEntity(request);
+            entity.setId(id);
+            entity = figureService.update(entity, newGroupId, newIndex);
+        } else {
+            entity = figureService.update(id, type, newGroupId, newIndex);
+        }
 
         var response = figureMapper.asResponse(entity);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{type}/{id}")
-    public ResponseEntity<Void> delete(@PathVariable FigureType type,
+    public ResponseEntity<Void> delete(@PathVariable ElementType type,
                                        @PathVariable long id) {
         log.info("Request to delete figure of {} type with id {}", type, id);
         figureService.delete(type, id);

@@ -16,11 +16,14 @@ import java.time.LocalDateTime;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CircleResponseDTO.class, name = "circle"),
         @JsonSubTypes.Type(value = TriangleResponseDTO.class, name = "triangle"),
-        @JsonSubTypes.Type(value = SquareResponseDTO.class, name = "square")
+        @JsonSubTypes.Type(value = SquareResponseDTO.class, name = "square"),
+        @JsonSubTypes.Type(value = GroupResponseDTO.class, name = "group")
 })
 public abstract class FigureResponseDTO {
 
     private long id;
+
+    private Long parentGroupId;
 
     private LocalDateTime created;
 

@@ -32,9 +32,7 @@ public class PictureService {
     }
 
     public Picture save(Picture picture) {
-        var rootGroup = new Group();
-        rootGroup.setGroupType(GroupType.HORIZONTAL);
-        picture.setRootGroup(rootGroup);
+        createRootGroup(picture);
         return pictureRepository.save(picture);
     }
 
@@ -48,4 +46,10 @@ public class PictureService {
         pictureRepository.deleteById(id);
     }
 
+    private void createRootGroup(Picture picture) {
+        var rootGroup = new Group();
+        rootGroup.setGroupType(GroupType.HORIZONTAL);
+        picture.setRootGroup(rootGroup);
+        rootGroup.setPicture(picture);
+    }
 }
