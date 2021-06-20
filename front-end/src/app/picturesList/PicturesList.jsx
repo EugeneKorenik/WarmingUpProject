@@ -72,12 +72,16 @@ class PicturesList extends React.Component {
                 {
                     name: newName
                 }
-            );
+            )
+            .then(response => response.json())
+            .then(response => {
+                picture.modified = response.modified;
+                this.setState({
+                    editingPictureId: null,
+                    pictures: this.state.pictures
+                });
+            });
         }
-
-        this.setState({
-            editingPictureId: null
-        });
     }
 
     render() {

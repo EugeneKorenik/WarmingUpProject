@@ -11,6 +11,7 @@ public interface PictureMapperService {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "modified", ignore = true)
+    @Mapping(target = "rootGroup", ignore = true)
     void merge(Picture newInfo, @MappingTarget Picture entity);
 
 }

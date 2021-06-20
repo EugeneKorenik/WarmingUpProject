@@ -29,7 +29,7 @@ export const updatePicture = (id, properties) => {
         })
     };
 
-    fetch(url, options);
+    return fetch(url, options);
 }
 
 export const deletePicture = (pictureId) => {

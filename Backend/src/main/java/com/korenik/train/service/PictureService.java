@@ -8,6 +8,7 @@ import com.korenik.train.service.mapper.PictureMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -28,7 +29,8 @@ public class PictureService {
     }
 
     public Picture findById(long id) {
-        return pictureRepository.getOne(id);
+        return pictureRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public Picture save(Picture picture) {
