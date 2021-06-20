@@ -1,7 +1,8 @@
 import React from 'react';
 import { DragSource, DropTarget } from "react-dnd";
-import { BorderStyle, ElementType } from '../model';
-import * as DndSpecifications from '../dndSpecifications';
+import { BorderStyle, ElementType } from '../util/model';
+import * as DndSpecifications from '../util/dndSpecifications';
+import * as BackendApi from '../backend-api';
 
 class DraggableCircle extends React.Component {
 
@@ -18,7 +19,7 @@ class DraggableCircle extends React.Component {
         };
     }
 
-    updateborderStyle = (event) => {
+    updateBorderStyle = (event) => {
         const oldValue = this.state.borderStyle;
         const newValue = event.target.value;
 
@@ -26,11 +27,19 @@ class DraggableCircle extends React.Component {
             this.setState({
                 borderStyle: newValue
             });
+
+            BackendApi.updateFigure(
+                this.props.object.id,
+                ElementType.CIRCLE,
+                {
+                    borderStyle: newValue
+                }
+            );
         }
     }
 
     render() {
-        const { connectDragSource, isDragging } = this.props;
+        const { connectDragSource, isDragging, object } = this.props;
         const borderStyle = this.state.borderStyle;
         const style = {
             borderStyle: borderStyle,
@@ -38,8 +47,8 @@ class DraggableCircle extends React.Component {
         };
 
         return connectDragSource(
-            <div id={this.props.id} className="circle element" style={style}>
-                <select onChange={this.updateborderStyle} value={this.state.borderStyle}>
+            <div id={object?.id} key={object?.id} className="circle element" style={style}>
+                <select onChange={this.updateBorderStyle} value={this.state.borderStyle}>
                     <option value={BorderStyle.DOTTED}>DOTTED</option>
                     <option value={BorderStyle.SOLID}>SOLID</option>
                     <option value={BorderStyle.DASHED}>DASHED</option>

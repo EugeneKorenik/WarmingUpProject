@@ -6,6 +6,7 @@ import com.korenik.train.api.v1.mapper.PictureMapper;
 import com.korenik.train.service.PictureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/pictures")
+@CrossOrigin(origins = "*",
+        allowedHeaders = "*",
+        exposedHeaders = "*"
+)
+@RequestMapping(path = "/api/v1/pictures")
 public class PictureController {
 
     private final PictureService pictureService;
@@ -45,14 +50,14 @@ public class PictureController {
 
     @PostMapping
     public ResponseEntity<PictureResponseDTO> create(@RequestBody PictureRequestDTO request) {
-        log.info("Request to create new picture");
+        log.info("Request to create new with name: {}", request.getName());
         var entity = pictureMapper.asEntity(request);
         entity = pictureService.save(entity);
         var responseBody = pictureMapper.asResponse(entity);
         return ResponseEntity.ok(responseBody);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PictureResponseDTO> update(@PathVariable long id,
                                                      @RequestBody PictureRequestDTO request) {
         log.info("Request to update picture information");

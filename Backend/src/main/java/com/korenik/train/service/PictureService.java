@@ -48,7 +48,7 @@ public class PictureService {
 
     private void createRootGroup(Picture picture) {
         var rootGroup = new Group();
-        rootGroup.setGroupType(GroupType.HORIZONTAL);
+        rootGroup.setGroupType(GroupType.COLUMN);
         picture.setRootGroup(rootGroup);
         rootGroup.setPicture(picture);
     }

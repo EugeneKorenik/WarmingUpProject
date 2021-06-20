@@ -1,6 +1,6 @@
 package com.korenik.train.model;
 
-public enum BorderType {
+public enum BorderStyle {
     DOTTED,
     DASHED,
     SOLID

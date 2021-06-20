@@ -1,16 +1,17 @@
 import React from 'react';
 import { DragSource, DropTarget } from "react-dnd";
-import { ElementType } from '../model';
-import * as DndSpecifications from '../dndSpecifications';
+import { ElementType } from '../util/model';
+import * as DndSpecifications from '../util/dndSpecifications';
+import * as BackendApi from '../backend-api';
 
 class DraggableTriangle extends React.Component {
 
     constructor(props) {
         super(props);
 
-        let colorHex = props.colorHex;
+        let colorHex = props.object?.colorHex;
         if (!colorHex) {
-            colorHex = "#00FFFF";
+            colorHex = "#c2c2c2";
         }
 
         this.state = {
@@ -29,6 +30,16 @@ class DraggableTriangle extends React.Component {
         }
     }
 
+    saveChanges = (event) => {
+        BackendApi.updateFigure(
+            this.props.object.id,
+            ElementType.TRIANGLE,
+            {
+                colorHex: this.state.colorHex
+            }
+        );
+    }
+
     render() {
         const { connectDragSource, isDragging } = this.props;
         const style = {
@@ -37,8 +48,8 @@ class DraggableTriangle extends React.Component {
         };
 
         return connectDragSource(
-            <div id={this.props.id} className="triangle element" style={style}>
-                <input type="color" onChange={this.updateColor} value={this.state.colorHex} />
+            <div className="triangle element" style={style}>
+                <input type="color" onChange={this.updateColor} value={this.state.colorHex} onBlur={this.saveChanges}/>
             </div>
         );
     }
@@ -47,9 +58,9 @@ class DraggableTriangle extends React.Component {
 class Triangle extends React.Component {
 
     render() {
-        const { connectDropTarget } = this.props;
+        const { connectDropTarget, object } = this.props;
         return connectDropTarget(
-            <div>
+            <div id={object.id} key={object.id}>
                 <DraggableTriangle {...this.props} />
             </div>
         );

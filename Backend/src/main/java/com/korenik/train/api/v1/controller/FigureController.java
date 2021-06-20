@@ -8,6 +8,7 @@ import com.korenik.train.model.ElementType;
 import com.korenik.train.service.FigureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,11 @@ import java.util.List;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/api/v1/figures")
+@CrossOrigin(origins = "*",
+        allowedHeaders = "*",
+        exposedHeaders = "*"
+)
+@RequestMapping(path = "/api/v1/figures")
 public class FigureController {
 
     private final FigureService figureService;
@@ -59,11 +64,11 @@ public class FigureController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/{type}/{id}")
+    @PutMapping("/{type}/{id}")
     public ResponseEntity<FigureResponseDTO> update(@PathVariable long id,
                                                     @PathVariable ElementType type,
-                                                    @RequestParam(required = false) Long newGroupId,
-                                                    @RequestParam(required = false) Integer newIndex,
+                                                    @RequestParam(required = false) Long groupId,
+                                                    @RequestParam(required = false) Integer index,
                                                     @RequestBody(required = false) @Valid FigureRequestDTO request) {
         log.info("Request to update figure of type {} with id {}", type, id);
 
@@ -71,9 +76,9 @@ public class FigureController {
         if(request != null) {
             entity = figureMapper.asEntity(request);
             entity.setId(id);
-            entity = figureService.update(entity, newGroupId, newIndex);
+            entity = figureService.update(entity, groupId, index);
         } else {
-            entity = figureService.update(id, type, newGroupId, newIndex);
+            entity = figureService.update(id, type, groupId, index);
         }
 
         var response = figureMapper.asResponse(entity);

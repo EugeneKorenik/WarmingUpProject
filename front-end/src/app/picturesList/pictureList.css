@@ -1,0 +1,79 @@
+.inline {
+    display: inline-block
+}
+
+.pictures-frame {
+    display: flex;
+    margin: 5%;
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    box-sizing: border-box;
+    border: 1px black solid;
+}
+
+.pictures-list {
+    margin: 2.5%;
+    height: 90%;
+    width: 65%;;
+    border: 1px black solid;
+    background-color: rgb(194, 194, 194);
+    box-sizing: border-box;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    height: 500px;
+    background-color: rgb(245, 245, 245);
+}
+
+.picture {
+    display: flex;
+    background-color: white;
+    border: 1px solid black;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button, .pictureInfo input {
+    color: black;
+    background-color: white;
+    border: 2px solid black;
+    height: 40px;
+    width: 70px;
+    box-sizing: border-box;
+}
+
+.pictureInfo input {
+    width: 240px;
+}
+
+button:hover {
+    color: white;
+    background-color: teal;
+}
+
+button:active {
+    color: white;
+    background-color: black;
+}
+
+.picture-form {
+    margin-top: 5%;
+    margin-left: 2.5%;
+    vertical-align: top;
+    width: 20%;
+}
+
+h4 {
+    margin: 0;
+}
+
+#pictureNameInput {
+    width: 200px;
+    height: 40px;
+    background: white;
+    border: 2px solid black;
+    box-sizing: border-box;
+}

@@ -12,8 +12,11 @@ import javax.validation.constraints.Pattern;
 @Entity(name = "triangles")
 public class Triangle extends Figure {
 
-    @NotNull
     @Pattern(regexp = "^#([A-F]|[a-f]|[0-9]){6}$")
     private String colorHex;
+
+    public Triangle() {
+        this.colorHex = "#c2c2c2";
+    }
 
 }

@@ -1,30 +1,31 @@
 import { ElementType } from "./model";
 
+export const dragSpecification = {
+    beginDrag: (props, monitor, component) => {
+        let item = props.object;
+        if(!item) {
+            item = {
+                id: props.id,
+                type: getElementType(component),
+            }
+
+            Object.assign(item, component.state);
+            return item;
+        }
+        return item;
+    }
+}
+
+
 export const dropSpecification = {
     drop: (props, monitor, component) => {
         if (!monitor.didDrop()) {
-            const item = monitor.getItem();
-            const droppableElementId = props.id;
-            if (droppableElementId !== item.id) {
-                props.moveElement(droppableElementId, item);
-            }
+            const draggableItem = monitor.getItem();
+            const droppableElementId = props.object?.id;
+            props.moveElement(droppableElementId, draggableItem);
         }
     }
 };
-
-export const dragSpecification = {
-    beginDrag: (props, monitor, component) => {
-        const object = props.object;
-        if(!object) {
-            return {
-                id: getIdentifier(props),
-                type: getElementType(component),
-                index: 0
-            }
-        }
-        return object;
-    }
-}
 
 export const collectSource = (connect, monitor) => {
     return {
@@ -51,10 +52,5 @@ function getElementType(component) {
         return ElementType.GROUP;
     }
     return componentName;
-}
-
-let currentIdentifier = 55;
-function getIdentifier(props) {
-    return props.id ? props.id : currentIdentifier++;
 }
 

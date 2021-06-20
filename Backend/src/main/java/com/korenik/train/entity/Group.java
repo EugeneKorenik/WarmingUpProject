@@ -18,11 +18,15 @@ public class Group extends Figure {
     @OneToOne
     private Picture picture;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "group_figure",
             joinColumns = {@JoinColumn(name = "group_id")},
             inverseJoinColumns = {@JoinColumn(name = "figure_id")}
     )
     private List<Figure> figures;
+
+    public Group() {
+        this.groupType = GroupType.ROW;
+    }
 
 }

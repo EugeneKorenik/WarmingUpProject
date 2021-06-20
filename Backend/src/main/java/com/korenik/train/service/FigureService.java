@@ -80,14 +80,12 @@ public class FigureService {
     }
 
     public Figure update(long id, ElementType type, Long newGroupId, Integer newIndex) {
+        var repository = findRepositoryByType(type);
         var entity = findByTypeAndId(type, id);
         updateParentGroup(entity, newGroupId);
         updateIndex(entity, newIndex);
-
-        var repository = findRepositoryByType(type);
         return repository.save(entity);
     }
-
 
     public void delete(ElementType elementType, long id) {
         var repository = findRepositoryByType(elementType);
@@ -95,7 +93,14 @@ public class FigureService {
     }
 
     private void updateParentGroup(Figure entity, Long newGroupId) {
-        if(newGroupId != null) {
+        var oldParentGroup = entity.getParentGroup();
+        if(newGroupId != null && (oldParentGroup == null || oldParentGroup.getId() != newGroupId)) {
+            if(oldParentGroup != null) {
+                var parentGroupFigures = oldParentGroup.getFigures();
+                parentGroupFigures.remove(entity);
+                groupRepository.save(oldParentGroup);
+            }
+
             var parent = findGroupById(newGroupId);
             entity.setParentGroup(parent);
 

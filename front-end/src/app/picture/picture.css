@@ -1,17 +1,18 @@
 html, body, #root {
-    width: 100%;
     height: 100%;
+    width: 100%;
     margin: 0;
+    background-color: teal;
 }
 
 .circle {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color:purple;
-    border: 5px black solid;
+    background-color:rgb(194, 194, 194);
+    border: 2px black solid;
+    box-sizing: border-box;
 }
-
 
 .circle select {
     position: relative;
@@ -22,7 +23,8 @@ html, body, #root {
 .square {
     width: 100px;
     height: 100px;
-    background-color: blue;
+    background-color: #c2c2c2;
+    border: 2px solid black;
     text-align: center;
 }
 
@@ -41,9 +43,8 @@ html, body, #root {
     border-top: 0px;
     border-left: 50px solid transparent;
     border-right: 50px solid transparent;
-    border-bottom: 100px solid #FF0000;
+    border-bottom: 100px solid #c2c2c2;
 }
-
 
 .triangle input {
     position: relative;
@@ -59,13 +60,14 @@ html, body, #root {
     min-width: 100px;
     min-height: 100px;
     border: 2px solid black;
+    background-color: white
 }
 
 .element {
     margin: 50px;
 }
 
-.application {
+.constructor-frame {
     display: flex;
     width: 100%;
     height: 100%;
@@ -76,10 +78,12 @@ html, body, #root {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    flex-basis: 15%;
     flex-grow: 0;
     flex-shrink: 0;
-    background-color: rgb(203, 140, 248);
+
+    background-color: white;
+    border: 2px solid black;
+    box-sizing: border-box;
 }
 
 .canvas {
@@ -89,4 +93,14 @@ html, body, #root {
     flex-basis: 85%;
     justify-content: center;
     align-items: center;
+}
+
+.sideBar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sideBar button {
+    width: 100%;
+    box-sizing: border-box;
 }

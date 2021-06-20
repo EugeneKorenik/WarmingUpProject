@@ -3,8 +3,9 @@ import { Square } from './Square';
 import { Circle } from './Circle';
 import { Triangle } from './Triangle';
 import { DropTarget, DragSource } from "react-dnd";
-import { ElementType, GroupType } from "../model";
-import * as DndSpecifications from '../dndSpecifications';
+import { ElementType, GroupType } from "../util/model";
+import * as DndSpecifications from '../util/dndSpecifications';
+import * as BackendApi from '../backend-api';
 
 class DraggableGroup extends React.Component {
 
@@ -28,6 +29,14 @@ class DraggableGroup extends React.Component {
             this.setState({
                 groupType: newGroupType
             });
+
+            BackendApi.updateFigure(
+                this.props.object.id,
+                ElementType.GROUP,
+                {
+                    'groupType': newGroupType
+                }
+            )
         }
     }
 
@@ -40,10 +49,8 @@ class DraggableGroup extends React.Component {
             const elementIndex = children.indexOf(nextElement);
 
             if (nextElement.type === ElementType.GROUP) {
-                const children = nextElement.elements ? [...nextElement.elements] : [];
-                return <Group id={nextElement.id}
-                    key={nextElement.id}
-                    index={elementIndex}
+                const children = nextElement.figures ? [...nextElement.figures] : [];
+                return <Group index={elementIndex}
                     object={nextElement}
                     children={children}
                     moveElement={this.props.moveElement}
@@ -52,22 +59,19 @@ class DraggableGroup extends React.Component {
 
             switch (nextElement.type) {
                 case ElementType.SQUARE:
-                    return <Square id={nextElement.id}
-                        key={nextElement.id}
+                    return <Square
                         index={elementIndex}
                         object={nextElement}
                         moveElement={this.props.moveElement}
                     />;
                 case ElementType.TRIANGLE:
-                    return <Triangle id={nextElement.id}
-                        key={nextElement.id}
+                    return <Triangle
                         index={elementIndex}
                         object={nextElement}
                         moveElement={this.props.moveElement}
                     />;
                 case ElementType.CIRCLE:
-                    return <Circle id={nextElement.id}
-                        key={nextElement.id}
+                    return <Circle
                         index={elementIndex}
                         object={nextElement}
                         moveElement={this.props.moveElement}
@@ -79,14 +83,14 @@ class DraggableGroup extends React.Component {
     }
 
     render() {
-        const renderedChildren = this.renderChildren(this.props?.object?.elements);
+        const renderedChildren = this.renderChildren(this.props?.object?.figures);
         const { connectDragSource } = this.props;
         const groupStyle = {
             flexDirection: this.state.groupType
         };
 
         return connectDragSource(
-            <div id={this.props.object?.id} className="group element" style={groupStyle}>
+            <div className="group element" style={groupStyle}>
                 <select value={this.state.groupType} onChange={this.updateGroupType}>
                     <option value={GroupType.VERTICAL}>VERTICAL</option>
                     <option value={GroupType.HORIZONTAL}>HORIZONTAL</option>
@@ -99,9 +103,9 @@ class DraggableGroup extends React.Component {
 
 class Group extends React.Component {
     render() {
-        const { connectDropTarget } = this.props;
+        const { connectDropTarget, object } = this.props;
         return connectDropTarget(
-            <div>
+            <div id={object.id} key={object.id}>
                 <DraggableGroup {...this.props} />
             </div>
         );

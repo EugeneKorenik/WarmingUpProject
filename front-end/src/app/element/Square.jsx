@@ -1,14 +1,17 @@
 import React from 'react';
 import { DragSource, DropTarget } from "react-dnd";
-import { ElementType } from '../model';
-import * as DndSpecifications from '../dndSpecifications';
+import { ElementType } from '../util/model';
+import * as DndSpecifications from '../util/dndSpecifications';
+import * as BackendApi from '../backend-api';
 
 class DraggableSquare extends React.Component {
+
+    regexp = /^[A-Z0-9]$/;
 
     constructor(props) {
         super(props);
 
-        let symbol = props.symbol;
+        let symbol = props.object?.symbol;
         if (!symbol) {
             symbol = "A";
         }
@@ -16,15 +19,36 @@ class DraggableSquare extends React.Component {
         this.state = {
             symbol: symbol
         };
+
+        this.symbolRef = React.createRef();
     }
 
-    processSymbolInput = (event) => {
-        const oldValue = this.state.symbol;
-        const newValue = event.target.value;
-        if (oldValue !== newValue) {
+    updateSymbol = () => {
+        const inputElement = this.symbolRef.current;
+        const newValue = inputElement.value;
+
+        if (this.regexp.test(newValue)) {
             this.setState({
                 symbol: newValue
             });
+
+            BackendApi.updateFigure(
+                this.props.object.id,
+                ElementType.SQUARE, 
+                {
+                    symbol: newValue
+                }
+            );
+        } else {
+            inputElement.value = this.state.symbol;
+        }
+    }
+
+    processClick = (event) => {
+        console.log(event.button);
+        if (event.button === 1) {
+            event.preventDefault();
+            this.props.removeElement(this.props.object);
         }
     }
 
@@ -35,8 +59,11 @@ class DraggableSquare extends React.Component {
         };
 
         return connectDragSource(
-            <div id={this.props.id} className="square element" style={style}>
-                <input type="text" pattern="A" onChange={this.processSymbolInput} required />
+            <div id={this.props.id} className="square element" style={style} onClick={this.processClick}>
+                <input type="text"
+                    onBlur={this.updateSymbol}
+                    ref={this.symbolRef}
+                    required />
                 <p>{this.state.symbol}</p>
             </div>
         );

@@ -1,16 +1,17 @@
 package com.korenik.train.api.v1.mapper;
 
 import com.korenik.train.api.v1.dto.figure.*;
-import com.korenik.train.api.v1.dto.figure.CircleRequestDTO;
-import com.korenik.train.api.v1.dto.figure.FigureRequestDTO;
-import com.korenik.train.api.v1.dto.figure.GroupRequestDTO;
-import com.korenik.train.api.v1.dto.figure.GroupResponseDTO;
 import com.korenik.train.entity.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValueMappingStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
 public interface FigureMapper {
 
     List<FigureResponseDTO> asResponse(List<Figure> entities);
@@ -22,7 +23,7 @@ public interface FigureMapper {
             return asEntity((TriangleRequestDTO) request);
         } else if (request instanceof SquareRequestDTO) {
             return asEntity((SquareRequestDTO) request);
-        } else if(request instanceof GroupRequestDTO) {
+        } else if (request instanceof GroupRequestDTO) {
             return asEntity((GroupRequestDTO) request);
         }
 
@@ -37,7 +38,7 @@ public interface FigureMapper {
             return asDTO((Triangle) entity);
         } else if (entity instanceof Square) {
             return asDTO((Square) entity);
-        } else if(entity instanceof Group) {
+        } else if (entity instanceof Group) {
             return asDTO((Group) entity);
         }
 

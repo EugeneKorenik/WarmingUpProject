@@ -12,8 +12,6 @@ public class GroupResponseDTO extends FigureResponseDTO {
 
     private GroupType groupType;
 
-    private List<GroupResponseDTO> groups;
-
     private List<FigureResponseDTO> figures;
 
 }
