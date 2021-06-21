@@ -14,6 +14,7 @@ class Canvas extends React.Component {
                 object={nextGroup}
                 children={children}
                 moveElement={this.props.moveElement}
+                removeElement={this.props.removeElement}
             />
         });
     }

@@ -8,7 +8,6 @@ import com.korenik.train.model.ElementType;
 import com.korenik.train.service.FigureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +72,7 @@ public class FigureController {
         log.info("Request to update figure of type {} with id {}", type, id);
 
         Figure entity;
-        if(request != null) {
+        if (request != null) {
             entity = figureMapper.asEntity(request);
             entity.setId(id);
             entity = figureService.update(entity, groupId, index);

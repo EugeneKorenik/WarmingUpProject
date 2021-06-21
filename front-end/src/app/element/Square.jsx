@@ -45,7 +45,6 @@ class DraggableSquare extends React.Component {
     }
 
     processClick = (event) => {
-        console.log(event.button);
         if (event.button === 1) {
             event.preventDefault();
             this.props.removeElement(this.props.object);
@@ -72,10 +71,22 @@ class DraggableSquare extends React.Component {
 
 class Square extends React.Component {
 
+    removeElement = () => {
+        const object = this.props.object;
+        BackendApi.deleteFigure(object.id, object.type)
+            .then(response => {
+                if (response.ok) {
+                    this.props.removeElement(object);
+                }
+            })
+
+    }
+
     render() {
         const { connectDropTarget } = this.props;
         return connectDropTarget(
             <div>
+                <button className="delete-button" onClick={this.removeElement}>X</button>
                 <DraggableSquare {...this.props} />
             </div>
         );

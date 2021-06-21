@@ -60,9 +60,11 @@ export function updateFigure(id, figureType, properties) {
 
 
 export function deleteFigure(id, type) {
-    const url = `${pictures}/${type}/${id}`;
+    type = type.toUpperCase();
+    const url = `${figures}/${type}/${id}`;
     const options = {
-        method: 'DELETE'
+        method: 'delete',
+        headers: applicationJsonContentType
     };
 
     return fetch(url, options);

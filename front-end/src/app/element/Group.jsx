@@ -51,9 +51,11 @@ class DraggableGroup extends React.Component {
             if (nextElement.type === ElementType.GROUP) {
                 const children = nextElement.figures ? [...nextElement.figures] : [];
                 return <Group index={elementIndex}
+                key={elementIndex}
                     object={nextElement}
                     children={children}
                     moveElement={this.props.moveElement}
+                    removeElement={this.props.removeElement}
                 />
             }
 
@@ -61,20 +63,26 @@ class DraggableGroup extends React.Component {
                 case ElementType.SQUARE:
                     return <Square
                         index={elementIndex}
+                        key={elementIndex}
                         object={nextElement}
                         moveElement={this.props.moveElement}
+                        removeElement={this.props.removeElement}
                     />;
                 case ElementType.TRIANGLE:
                     return <Triangle
                         index={elementIndex}
+                        key={elementIndex}
                         object={nextElement}
                         moveElement={this.props.moveElement}
+                        removeElement={this.props.removeElement}
                     />;
                 case ElementType.CIRCLE:
                     return <Circle
                         index={elementIndex}
+                        key={elementIndex}
                         object={nextElement}
                         moveElement={this.props.moveElement}
+                        removeElement={this.props.removeElement}
                     />;
                 default:
                     throw new Error(`Can't use next type: ${nextElement.type}`);
@@ -102,10 +110,23 @@ class DraggableGroup extends React.Component {
 }
 
 class Group extends React.Component {
+
+    removeElement = () => {
+        const object = this.props.object;
+        BackendApi.deleteFigure(object.id, object.type)
+            .then(response => {
+                if (response.ok) {
+                    this.props.removeElement(object);
+                }
+            })
+
+    }
+
     render() {
         const { connectDropTarget, object } = this.props;
         return connectDropTarget(
-            <div id={object.id} key={object.id}>
+            <div className="group-container" id={object.id} key={object.id}>
+                <button className="delete-button" onClick={this.removeElement}>X</button>
                 <DraggableGroup {...this.props} />
             </div>
         );

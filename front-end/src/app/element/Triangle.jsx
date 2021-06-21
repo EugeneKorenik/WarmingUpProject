@@ -49,7 +49,7 @@ class DraggableTriangle extends React.Component {
 
         return connectDragSource(
             <div className="triangle element" style={style}>
-                <input type="color" onChange={this.updateColor} value={this.state.colorHex} onBlur={this.saveChanges}/>
+                <input type="color" onChange={this.updateColor} value={this.state.colorHex} onBlur={this.saveChanges} />
             </div>
         );
     }
@@ -57,10 +57,22 @@ class DraggableTriangle extends React.Component {
 
 class Triangle extends React.Component {
 
+    removeElement = () => {
+        const object = this.props.object;
+        BackendApi.deleteFigure(object.id, object.type)
+            .then(response => {
+                if (response.ok) {
+                    this.props.removeElement(object);
+                }
+            })
+
+    }
+
     render() {
         const { connectDropTarget, object } = this.props;
         return connectDropTarget(
             <div id={object.id} key={object.id}>
+                <button className="delete-button" onClick={this.removeElement}>X</button>
                 <DraggableTriangle {...this.props} />
             </div>
         );

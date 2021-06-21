@@ -67,7 +67,6 @@ class Picture extends React.Component {
       figures: null
     };
 
-    console.log(elementWithoutCycleDependencies);
     const options = {
       method: 'put',
       headers: BackendApi.applicationJsonContentType,
@@ -192,8 +191,11 @@ class Picture extends React.Component {
     const parent = element.parent;
     const indexOfElement = parent.figures.indexOf(element);
     parent.figures.splice(indexOfElement, 1);
+  
+    const picture = this.state.picture;
+    picture.rootGroup.figures = [...picture.rootGroup.figures];
     this.setState({
-      picture: {...this.state.picture}
+      picture: picture
     });
   }
 
@@ -232,7 +234,7 @@ class Picture extends React.Component {
             <DraggableGroup />
           </div>
         </div>
-        <Canvas figures={figures} moveElement={this.moveElement} />
+        <Canvas figures={figures} moveElement={this.moveElement} removeElement={this.removeElement}/>
       </div>
     );
   }

@@ -6,7 +6,6 @@ import com.korenik.train.api.v1.mapper.PictureMapper;
 import com.korenik.train.service.PictureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

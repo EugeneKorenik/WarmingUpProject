@@ -88,18 +88,17 @@ public class FigureService {
     }
 
     public void delete(ElementType elementType, long id) {
+        var element = findByTypeAndId(elementType, id);
+        unbindFromParent(element);
+
         var repository = findRepositoryByType(elementType);
-        repository.deleteById(id);
+        repository.delete(element);
     }
 
     private void updateParentGroup(Figure entity, Long newGroupId) {
         var oldParentGroup = entity.getParentGroup();
         if(newGroupId != null && (oldParentGroup == null || oldParentGroup.getId() != newGroupId)) {
-            if(oldParentGroup != null) {
-                var parentGroupFigures = oldParentGroup.getFigures();
-                parentGroupFigures.remove(entity);
-                groupRepository.save(oldParentGroup);
-            }
+            unbindFromParent(entity);
 
             var parent = findGroupById(newGroupId);
             entity.setParentGroup(parent);
@@ -110,6 +109,15 @@ public class FigureService {
             }
 
             figures.add(entity);
+        }
+    }
+
+    void unbindFromParent(Figure entity) {
+        var oldParentGroup = entity.getParentGroup();
+        if(oldParentGroup != null) {
+            var parentGroupFigures = oldParentGroup.getFigures();
+            parentGroupFigures.remove(entity);
+            groupRepository.save(oldParentGroup);
         }
     }
 

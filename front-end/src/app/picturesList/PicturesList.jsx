@@ -89,7 +89,8 @@ class PicturesList extends React.Component {
             const pictureCreated = new Date(picture.created).toString();
             const pictureModified = new Date(picture.modified).toString();
 
-            return (<div id={picture.id} key={picture.id} className="picture">
+            return (
+            <div id={picture.id} key={picture.id} className="picture">
                 <div className="picture-info">
                     {
                         this.state.editingPictureId !== picture.id

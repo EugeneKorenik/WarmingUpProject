@@ -3,6 +3,7 @@ import { DragSource, DropTarget } from "react-dnd";
 import { BorderStyle, ElementType } from '../util/model';
 import * as DndSpecifications from '../util/dndSpecifications';
 import * as BackendApi from '../backend-api';
+import './element.css';
 
 class DraggableCircle extends React.Component {
 
@@ -60,10 +61,21 @@ class DraggableCircle extends React.Component {
 
 class Circle extends React.Component {
 
+    removeElement = () => {
+        const object = this.props.object;
+        BackendApi.deleteFigure(object.id, object.type)
+            .then(response => {
+                if (response.ok) {
+                    this.props.removeElement(object);
+                }
+            })
+
+    }
     render() {
         const { connectDropTarget } = this.props;
         return connectDropTarget(
             <div>
+                <button className="delete-button" onClick={this.removeElement}>X</button>
                 <DraggableCircle {...this.props} />
             </div>
         );
